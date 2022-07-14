@@ -6,27 +6,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class MyAdapter(private val context: Context, private val movieList: List<MyDataItem>) :
     RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var imgMovie: ImageView
-        var tvNameMovies: TextView
-        var tvCategory: TextView
-        var tvFirstAppearance: TextView
-        var tvPublisher: TextView
-        var tvBio: TextView
 
-        init {
-            imgMovie = itemView.findViewById(R.id.img_movie)
-            tvNameMovies = itemView.findViewById(R.id.tvNameMovie)
-            tvCategory = itemView.findViewById(R.id.tvCategory)
-            tvFirstAppearance = itemView.findViewById(R.id.tvFirstAppearance)
-            tvPublisher = itemView.findViewById(R.id.tvPublisher)
-            tvBio = itemView.findViewById(R.id.tvBio)
+        fun bind(property: MyDataItem) {
+            var imgMovie: ImageView = itemView.findViewById(R.id.img_movie)
+            var tvNameMovies: TextView = itemView.findViewById(R.id.tvNameMovie)
+            var tvCategory: TextView = itemView.findViewById(R.id.tvCategory)
+            var tvFirstAppearance: TextView = itemView.findViewById(R.id.tvFirstAppearance)
+            var tvPublisher: TextView = itemView.findViewById(R.id.tvPublisher)
+            var tvBio: TextView = itemView.findViewById(R.id.tvBio)
+
+            Glide.with(itemView.context).load(property.imageurl).into(imgMovie)
+            tvNameMovies.text = property.name
+            tvCategory.text = property.createdby
+            tvFirstAppearance.text = property.firstappearance
+            tvPublisher.text = property.publisher
+            tvBio.text = property.bio
         }
     }
 
@@ -36,12 +37,7 @@ class MyAdapter(private val context: Context, private val movieList: List<MyData
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.imgMovie.setImageURI(movieList[position].imageurl.toUri())
-        holder.tvNameMovies.text = movieList[position].name
-        holder.tvCategory.text = movieList[position].createdby
-        holder.tvFirstAppearance.text = movieList[position].firstappearance
-        holder.tvPublisher.text = movieList[position].publisher
-        holder.tvBio.text = movieList[position].bio
+        holder.bind(movieList[position])
     }
 
     override fun getItemCount(): Int {
